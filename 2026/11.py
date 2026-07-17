@@ -29,60 +29,6 @@ lines = [parse_line(line) for line in lines]
 res = 0
 
 
-def tree(dna, i, sunlight, stems, fixed_sprouts):
-    sprouts = {(i * 10, 1): 0}
-    # stems = {}
-    for age in range(1, 100 + 1):
-        new_sprouts = defaultdict(int)
-        for sprout in sprouts:
-            x, y = sprout
-            stems[sprout] = sprouts[sprout]
-            sunlight[x].append(y)
-            left, up, right = dna[sprouts[sprout]]
-            for nx, ny, r in [(x - 1, y, left), (x, y + 1, up), (x + 1, y, right)]:
-                if r != "XX":
-                    if (nx, ny) not in stems and (nx, ny) not in fixed_sprouts:
-                        new_sprouts[(nx, ny)] = max(r, new_sprouts[(nx, ny)])
-        sprouts = new_sprouts
-        for x in sunlight[x]:
-            sunlight[x] = sorted(sunlight[x], reverse=True)
-
-        my = mxl = mxr = 0
-        for x, y in sprouts:
-            mxl = min(mxl, x)
-            mxr = max(mxr, x)
-            my = max(my, y)
-
-        for x, y in stems:
-            mxl = min(mxl, x)
-            mxr = max(mxr, x)
-            my = max(my, y)
-
-        for y in range(1, my + 1)[::-1]:
-            for x in range(mxl, mxr + 1):
-                if (x, y) in sprouts:
-                    print("@", end="")
-                elif (x, y) in stems:
-                    print("#", end="")
-                else:
-                    print(" ", end="")
-            print()
-
-        energy = 0
-        # print("stems", len(stems), len(sprouts), sprouts)
-        for x, y in stems:
-            above = sunlight[x].index(y)
-            # if y == 1:
-            # print(x, above)
-            energy += max(0, 3 - above) * min(10, y)
-        if energy < 3 * (len(stems) + len(sprouts)) and age >= 5:
-            break
-    for sprout in sprouts:
-        fixed_sprouts[sprout] = sprouts[sprout]
-    print("tree", i, age, energy, len(stems) + len(sprouts))
-    return len(stems) + len(sprouts), stems, fixed_sprouts
-
-
 def trees(dnas, sprouts):
     l = len(dnas)
 
@@ -128,8 +74,8 @@ def trees(dnas, sprouts):
             # print(t, age, energy, 3 * required)
             if t not in died:
                 required = energy = 0
-                for sprout in new_sprouts:
-                    if new_sprouts[sprout][0] == t:
+                for sprout in sprouts:
+                    if sprouts[sprout][0] == t:
                         required += 1
                 for x, y in stems:
                     if stems[(x, y)][0] == t:

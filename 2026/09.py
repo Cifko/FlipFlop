@@ -14,9 +14,9 @@ def solve(part: int):
         m, no_teleport, x, y = heapq.heappop(s)
         if lines[y][x] == "E":
             return m
-        if (x, y, no_teleport) in visited:
+        if (x, y) in visited:
             continue
-        visited.add((x, y, no_teleport))
+        visited.add((x, y))
 
         for nx, ny in [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]:
             if lines[ny][nx] in ".E":

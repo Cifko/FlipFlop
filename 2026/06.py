@@ -88,6 +88,7 @@ for i, cell in enumerate(on_off):
     if cell == 0:
         continue
     if light_enabled_by[(x, y)] == "S":
+        print(x, y, cell)
         part1 *= 2
         part1 += cell == "L"
     part2 *= 2
@@ -96,6 +97,7 @@ for i, cell in enumerate(on_off):
         part3 *= 2
         part3 += cell == "L"
 
+print()
 print("Part1", part1)
 print("Part2", part2)
 print("Part3", part3)
